@@ -5,15 +5,17 @@
 // variable aws_secret_key     {}
 # Set the Environment Lifetime
 # 1h, 1d, 1w, 1y
-variable linux_count { default = "1" }
-variable windows_count { default = "1" }
-variable lifetime  { default = "1w" }
+variable linux_count        { default = "1" }
+variable windows_count      { default = "1" }
+variable lifetime           { default = "1w" }
 variable aws_sshkey         { default = "puppetdemos" }
-variable user_name        {
+variable user_name          {
     description = "The first part of your puppet.com email address."
+    default     = "tommy"
 }
 variable prefix             {
     description = "A short prefix to denote your servers, such as your initials."
+    default     = "tls"
 }
 
 #--------------------------------------------------------------
@@ -42,9 +44,10 @@ variable pp_application { default = "generic" }
 variable puppet_ami        { default = "ami-6f68cf0f" }
 variable pe_version        { default = "2018.1.2" }
 variable git_pri_key       { default = "/app/keys/control-repo" }
-variable git_pub_key       { default = "/app/keys/control-repo" }
+variable git_pub_key       { default = "/app/keys/control-repo.pub" }
 variable git_url           { 
     description = "The git URL to your control repo. Example: https://github.com/cdrobey/puppet-repo"
+    default     = "git@github.com:tspeigner/control-repo-1.git"
 }
 variable eyaml_pri_key     { default = "/app/keys/private_key.pkcs7.pem" }
 variable eyaml_pub_key     { default = "/app/keys/public_key.pkcs7.pem" }
@@ -75,6 +78,8 @@ variable windows_instance_type { default = "t2.small" }
 #--------------------------------------------------------------
 # CD4PE Provisioning Variables
 #--------------------------------------------------------------
+variable cd4pe_name          { default = "cd4pe"}
+variable cd4pe_ami           { default = "ami-6f68cf0f" }
 variable cd4pe_instance_type { default = "m4.large" }
 
 # TODO: Move AMIs to data resource, ensure latest.
