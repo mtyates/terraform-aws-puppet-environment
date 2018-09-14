@@ -9,9 +9,9 @@ data "template_file" "init" {
   template = "${file("modules/cd4pe/bootstrap/bootstrap_pe.tpl")}"
 
   vars {
-    master_name   = "${var.name}"
-    master_fqdn   = "${var.name}.${var.pridomain}"
-    name          = "${var.name}"
+    cd4pe_name   = "${var.name}"
+    cd4pe_fqdn   = "${var.name}.${var.pridomain}"
+    name         = "${var.name}"
   }
 }
 
