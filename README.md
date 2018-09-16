@@ -11,34 +11,27 @@ This terraform code will build a demo environment in AWS containing of:
 
 #### Pre-Requisites
 
-* Docker installed on your laptop.
+* Docker installed on your laptop. https://www.docker.com/get-started
+* If you are on a Mac, install Homebrew Package manager https://brew.sh/
+* Install ruby: `brew install ruby`
 * The ruby hiera-eyaml gem should be installed. `gem install hiera-eyaml`
 
 #### Pre-Deployment Steps
 
-* Run `eyaml createkeys`
-* Generate ssh keys for github and store them in the ./keys folder eyaml created. `ssh-keygen -f ./keys/control-repo`
-* Create [your var file](Create Your Var File).
-
-#### Running it in Docker
-
-**Initialize**
-
-    > docker run -it -e "AWS_ACCESS_KEY_ID=*your-access-key*" -e "AWS_SECRET_ACCESS_KEY=*your-secret-key*" -v $(pwd):/app/ -w /app/ hashicorp/terraform:light init
-
-**Validate**
-
-    > docker run -it -e "AWS_ACCESS_KEY_ID=*your-access-key*" -e "AWS_SECRET_ACCESS_KEY=*your-secret-key*" -v $(pwd):/app/ -w /app/ hashicorp/terraform:light validate
-
-**Plan**
-
-    > docker run -it -e "AWS_ACCESS_KEY_ID=*your-access-key*" -e "AWS_SECRET_ACCESS_KEY=*your-secret-key*" -v $(pwd):/app/ -w /app/ hashicorp/terraform:light plan --var-file=example.varfile
-
-**Apply**
-
-    > docker run -it -e "AWS_ACCESS_KEY_ID=*your-access-key*" -e "AWS_SECRET_ACCESS_KEY=*your-secret-key*" -v $(pwd):/app/ -w /app/ hashicorp/terraform:light apply --var-file=example.varfile
-
-
+* Run `eyaml createkeys`. 
+   * This command wil create a `./keys` folder and generate 2 files in it: *./keys/private_key.pkcs7.pem*, */keys/public_key.pkcs7.pem*.
+* Generate private & public SSH key files in the ./keys folder: `ssh-keygen -f ./keys/<your initials>-control-repo`. For example: `ssh-keygen -f ./keys/rr-control-repo` *(just hit Enter to all questions)*
+* Upload the <your initials>-control-repo.pub (public) key to your AWS account.
+   * Login to the AWS Bastion 
+   * Switch role
+   * Click on Services -> EC2 -> Key Pair (on left hand side menu)
+   * Click on *Import Key Pair* and upload the ./keys/<your initials>-control-repo.pub file or cut-and-paste its contents
+* Upload the <your initials>-control-repo.pub key to your Github account
+   * Login to Github.
+   * Go to your Settings -> SSH and GPG Keys or go to *https://github.com/settings/keys*. 
+   * Click on *New SSH Key* button and upload the ./keys/<your initials>-control-repo.pub file.
+* Create your Var File(below) or request one from your team. 
+  
 #### Create Your Var File
 
 **Mandatory Variables**
@@ -46,8 +39,8 @@ This terraform code will build a demo environment in AWS containing of:
     aws_sshkey: The name of the sshkey in AWS to use for logging into instances.
     aws_sshkey_path: the path to the PEM file on your laptop.
     user_name: Identify instance you've built (created_by tag)
-    git_url: link to your puppet control repo in git.
     prefix: tags a subdomain to your instances.
+    pridomain: private domain suffix
 
 **Optional**
 
@@ -59,6 +52,36 @@ This terraform code will build a demo environment in AWS containing of:
     git_pub_key: Path to the public key of your github repository. (default: "/app/keys/github.pub")
     eyaml_pri_key: Path to the private key used for eyaml hiera. (default: "/app/keys/private_key.pkcs7.pem")
     eyaml_pub_key: Path to the public key use for eyaml heira. (default:  "/app/keys/public_key.pkcs7.pem")
+
+
+#### Running it in Docker
+
+**Initialize**
+
+    > docker run -it -e "AWS_ACCESS_KEY_ID=*your-access-key*" -e "AWS_SECRET_ACCESS_KEY=*your-secret-key*" -v $(pwd):/app/ -w /app/ hashicorp/terraform:light init
+
+**Validate**
+
+    > docker run -it -e "AWS_ACCESS_KEY_ID=*your-access-key*" -e "AWS_SECRET_ACCESS_KEY=*your-secret-key*" -v $(pwd):/app/ -w /app/ hashicorp/terraform:light validate --var-file=example.varfile
+
+**Plan**
+
+    > docker run -it -e "AWS_ACCESS_KEY_ID=*your-access-key*" -e "AWS_SECRET_ACCESS_KEY=*your-secret-key*" -v $(pwd):/app/ -w /app/ hashicorp/terraform:light plan --var-file=example.varfile
+
+**Apply**
+
+    > docker run -it -e "AWS_ACCESS_KEY_ID=*your-access-key*" -e "AWS_SECRET_ACCESS_KEY=*your-secret-key*" -v $(pwd):/app/ -w /app/ hashicorp/terraform:light apply --var-file=example.varfile
+
+
+
+#### Post-Deployment Steps
+* Wait for around 5-10 minutes for the PE Console to be available.
+* You can ssh to the master and agent nodes by typing: `ssh -i ./keys/<your initials>-control-repo <machine name>`
+   * Note that you are using the private key and AWS lets you log into the nodes because you uploaded the corresponding public key with the same name, in the pre-deployment stage.
+   * TIP: It is a good idea to put these commands in your `~/.ssh/config` file to stop the host key checking:
+      * __UserKnownHostsFile=/dev/null__
+      * __StrictHostKeyChecking=no__
+   * Reason: You will be destroying & deploying Puppet stacks repeatedly. Terraform code will generate the same node names.However, these are new instance with new SSH host keys. Trying to ssh to the same node name but different host key will cause ssh to report a [WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!](https://linuxcommando.blogspot.com/2008/10/how-to-disable-ssh-host-key-checking.html) error message. 
 
 ####TODO
 
