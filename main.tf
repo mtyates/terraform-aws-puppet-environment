@@ -85,3 +85,23 @@ module "linux" {
   puppet_ip      = "${module.puppet.puppet_private_ip}"
   lifetime       = "${var.lifetime}"
 }
+
+module "cd4pe" {
+  source         = "modules/cd4pe"
+  user_name      = "${var.user_name}"
+  instance_type  = "${var.linux_instance_type}"
+  prefix         = "${var.prefix}"
+  name           = "cd4pe"
+  #count          = "${var.linux_count}"
+  pridomain      = "${var.prefix}-${var.pridomain}"
+  pubdomain      = "${var.prefix}-${var.pubdomain}"
+  ami            = "${data.aws_ami.centos7.image_id}"
+  subnet_id      = "${data.aws_subnet.puppetdemos.id}"
+  sshkey         = "${var.aws_sshkey}"
+  puppet_name    = "puppet"
+  pp_role        = "${var.pp_role}"
+  pp_application = "${var.pp_application}"
+  pp_environment = "${var.pp_environment}"
+  puppet_ip      = "${module.puppet.puppet_private_ip}"
+  lifetime       = "${var.lifetime}"
+}

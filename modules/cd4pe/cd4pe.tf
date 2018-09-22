@@ -6,14 +6,20 @@
 # Resources: Build cd4pe Configuration
 #--------------------------------------------------------------
 data "template_file" "init" {
-  template = "${file("modules/cd4pe/bootstrap/bootstrap_pe.tpl")}"
+  template = "${file("modules/cd4pe/bootstrap/bootstrap_cd4pe_pa.tpl")}"
 
   vars {
-    cd4pe_name   = "${var.name}"
-    cd4pe_fqdn   = "${var.name}.${var.pridomain}"
-    name         = "${var.name}"
+    puppet_name    = "${var.puppet_name}"
+    puppet_ip      = "${var.puppet_ip}"
+    puppet_fqdn    = "${var.puppet_name}.${var.pridomain}"
+    pp_role        = "${var.pp_role}"
+    pp_application = "${var.pp_application}"
+    pp_environment = "${var.pp_environment}"
+    name           = "${var.name}"
+    domain         = "${var.pridomain}"
   }
 }
+
 
 data "aws_route53_zone" "cd4pe" {
   name = "${var.pubdomain}"
