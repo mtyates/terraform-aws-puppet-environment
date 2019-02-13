@@ -1,0 +1,1 @@
+docker run -it -e "AWS_ACCESS_KEY_ID=$TF_VAR_access_keys" -e "AWS_SECRET_ACCESS_KEY=$TF_VAR_secret_access_key" -v $(pwd):/app/ -w /app/ hashicorp/terraform:light apply --var-file=tommy.varfile
