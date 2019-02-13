@@ -2,5 +2,6 @@
 # Provider Variables
 #--------------------------------------------------------------
 provider "aws" {
-  region     = "${var.region}"
+  region                  = "${var.region}"
+  shared_credentials_file = "/Users/tommy/.aws/credentials"
 }

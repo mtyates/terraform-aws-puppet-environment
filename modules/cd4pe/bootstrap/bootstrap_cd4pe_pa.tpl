@@ -29,6 +29,8 @@ PP_ENVIRONMENT=${pp_environment}
 PP_HOSTNAME=${name}
 PP_ZONE=${domain}
 
+
+
 #--------------------------------------------------------------
 # Redirect all stdout and stderr to logfile,
 #--------------------------------------------------------------

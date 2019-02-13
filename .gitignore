@@ -1,6 +1,7 @@
 terraform.tfstate
 terraform.tfstate.backup
 *.varfile
+*.json
 puppetdemos
 puppetdemos.pub
 .terraform/
