@@ -81,7 +81,7 @@ module "linux" {
   puppet_name    = "puppet"
   pp_role        = "${var.pp_role}"
   pp_application = "${var.pp_application}"
-  pp_environment = "tommy"
+  pp_environment = "matthew.yates"
   #pp_role        = "${var.pp_role}"
   #pp_application = "${var.pp_application}"
   #pp_environment = "${var.pp_environment}"
