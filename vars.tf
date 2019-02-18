@@ -5,17 +5,17 @@
 // variable aws_secret_key     {}
 # Set the Environment Lifetime
 # 1h, 1d, 1w, 1y
-variable linux_count        { default = "1" }
-variable windows_count      { default = "1" }
+variable linux_count        { default = "2" }
+variable windows_count      { default = "2" }
 variable lifetime           { default = "1w" }
 variable aws_sshkey         { default = "puppetdemos" }
 variable user_name          {
     description = "The first part of your puppet.com email address."
-    default     = "tommy"
+    default     = "matthew.yates"
 }
 variable prefix             {
     description = "A short prefix to denote your servers, such as your initials."
-    default     = "ts"
+    default     = "mty"
 }
 
 #--------------------------------------------------------------
@@ -47,7 +47,7 @@ variable git_pri_key       { default = "/app/keys/control-repo" }
 variable git_pub_key       { default = "/app/keys/control-repo.pub" }
 variable git_url           { 
     description = "The git URL to your control repo. Example: https://github.com/cdrobey/puppet-repo"
-    default     = "git@github.com:tspeigner/control-repo-1.git"
+    default     = "https://github.com/puppetlabs-seteam/control-repo"
 }
 variable eyaml_pri_key     { default = "/app/keys/private_key.pkcs7.pem" }
 variable eyaml_pub_key     { default = "/app/keys/public_key.pkcs7.pem" }
