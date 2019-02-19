@@ -15,7 +15,7 @@ variable user_name          {
 }
 variable prefix             {
     description = "A short prefix to denote your servers, such as your initials."
-    default     = "mty"
+    default     = "my"
 }
 
 #--------------------------------------------------------------
