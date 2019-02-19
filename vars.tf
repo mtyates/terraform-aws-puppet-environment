@@ -21,7 +21,7 @@ variable prefix             {
 #--------------------------------------------------------------
 # Site Variables
 #--------------------------------------------------------------
-variable region             { default = "us-west-2" }
+variable region             { default = "us-east-1a" }
 // variable network0_cidr      { 
 //     description = "The CIDR block for your VPC"
 // }
